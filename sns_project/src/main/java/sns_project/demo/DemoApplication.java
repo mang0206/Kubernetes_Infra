@@ -1,13 +1,13 @@
-package snsproject.springboot.vscode.sns_project;
+package sns_project.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SnsProjectApplication {
+public class DemoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SnsProjectApplication.class, args);
+		SpringApplication.run(DemoApplication.class, args);
 	}
 
 }

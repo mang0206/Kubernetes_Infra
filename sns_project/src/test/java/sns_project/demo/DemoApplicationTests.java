@@ -1,10 +1,10 @@
-package snsproject.springboot.vscode.sns_project;
+package sns_project.demo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SnsProjectApplicationTests {
+class DemoApplicationTests {
 
 	@Test
 	void contextLoads() {
