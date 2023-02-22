@@ -23,6 +23,10 @@ repo_gpgcheck=0
 gpgkey=https://${gg_pkg}/yum-key.gpg https://${gg_pkg}/rpm-package-key.gpg
 EOF
 
+# docker repo
+yum install yum-utils -y 
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
 # Set SELinux in permissive mode (effectively disabling it)
 # selinux가 제한적으로 사용되지 않도록 permissive 모드로 변경
 # SELinux(Security-Enhanced Linux)는 관리자가 시스템 액세스 권한을 효과적으로 제어할 수 있게 하는 Linux 시스템용 보안 아키텍처입니다

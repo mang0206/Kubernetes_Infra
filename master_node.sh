@@ -23,5 +23,18 @@ chown $(id -u):$(id -g) $HOME/.kube/config
 # 컨테이너 네트워크 인터페이스(CNI)인 캘리코(Calico)의 설정을 적용해 쿠버네티스의 네터워크를 구성합니다.
 # ##캘리코 이해하기 https://velog.io/@200ok/Kubernetes-Calico-CNI-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0 ##
 
-kubectl apply -f \
-https://raw.githubusercontent.com/sysnet4admin/IaC/master/manifests/172.16_net_calico.yaml
+# raw_address for gitcontent
+raw_git="raw.githubusercontent.com/sysnet4admin/IaC/master/manifests" 
+
+# config for kubernetes's network 
+kubectl apply -f https://$raw_git/172.16_net_calico.yaml
+
+# install bash-completion for kubectl 
+yum install bash-completion -y 
+
+# kubectl completion on bash-completion dir
+kubectl completion bash >/etc/bash_completion.d/kubectl
+
+# alias kubectl to k 
+echo 'alias k=kubectl' >> ~/.bashrc
+echo 'complete -F __start_kubectl k' >> ~/.bashrc
