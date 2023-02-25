@@ -1,0 +1,169 @@
+기억하면 좋은 명령어
+
+리소스 모두 삭제
+kubectl delete deployment,pod,rs, --all
+kubectl delete --all
+
+특정 오브젝트 리스트
+kubectl get 오브젝트 이름
+
+해당 파드에 직접 접근
+kubectl exec -it 파드명 bash
+
+파드 로그확인
+kubectl logs 파드명
+
+디플로이먼트의 포드 개수를 변경
+kubectl scale --replicas=숫자 deployment 디플로이먼트명
+
+쿠버네티스 볼륨
+때때로 파드에서 생성한 내용을 기록하거나 모든 파드가 동일한 설정 값을 유지하고 관리하기 위해
+공유된 볼륨을로부터 공통된 설정을 가지고 올 수 있도록 설계해야 할 때도 있다.
+
+스토리지 볼륨은 파드와 같은 최상위 리소스는 아니지만 파드의 일부분으로 정의되며 파드와 동일한 라이프사이클을 가진다. 이는 파드가 시작되면 볼륨이 생성되고, 파드가 삭제되면 볼륨이 삭제되는 것을 의미한다.
+따라서 볼륨의 콘텐츠는 컨테이너가 다시 시작해도 지속된다.
+컨테이너가 다시 시작되면 새로운 컨테이너는 이전 컨테이너가 볼륨에 기록한 모든 파일들을 볼 수 잇다.
+또한 파드가 여러개의 컨테이너를 가졌다면 모든 컨테이너가 볼륨을 공유할 수도 있다.
+
+쿠버네티스에는 다양한 볼륨 스토리지가 있다
+
+1. 임시 : emptyDir
+일시적인 데이터를 저장하는 데 사용되는 간단한 빈 디렉토리
+
+파드에 실행 중인 애플리케이션은 어떤 파일이든 볼륨에 쓸 수 있다.
+볼륨의 라이프사이클이 파드에 묶여 있으므로 파드가 삭제되면 볼륨의 콘텐츠는 사라진다.
+동일한 파드에서 실행 중인 컨테이너 간 파일을 공유할 때 유용하다.
+
+2. 로컬 : hostpath
+워커 노드의 파일시스템을 파드의 디렉토리로 마운트하는 데 사용
+
+노드 파일시스템의 특정 파일이나 디렉터리를 가리킨다.
+hostPath는 볼륨의 콘텐츠라 파드가 종료되도 삭제되지 않는다.
+
+3. 영구 : PV, PVC
+데이터가 사라지지 않고 보존되도록 파드 외부에 볼륨을 생성해 데이터를 보존하기 위해서는
+퍼시스턴트 볼륨(Persistent Volume, PV)과 퍼시스턴트 볼륨 클레임(Persistent Volume Claim, PVC) 을 사용할 수 있다.
+쿠버네티스는 볼륨을 파드에 직접 할당하지 않고 중간에 PVC를 두어 파드와 파드가 사용할 스토리지를 분리한다. 
+사용자가 PV를 직접 구축하더라도 이를 사용하려면 PVC를 경유해야 한다. 
+PV와 PVC를 연결하는 단계를 바인딩이라고 한다. PVC에 원하는 스토리지의 용량과 접근 방법을 명시해서 요청하면 이에 맞는 PV가 할당되는 것이다.
+
+비유하면 PV는 요리사(관리자)가 피자를 굽는 것이고, PVC는 손님(사용자)가 원하는 만큼의 피자를 접시에 담아 가져오는 것이다.
+
+pv : 쿠버네티스 클러스터 외부 스토리지와 연결을 담당하는 리소스
+pvc : pv와 파드를 연결하기 위한 리소스
+
+pv 생성
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumneReclaimPolicy: Retain
+  volumeMode: Filesystem # 파일 시스템 형식
+  nfs:
+    server: 192.168.1.10
+    path:/ nfs_shared
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-hostpath
+spec:
+  capacity:
+    storage: 100Mi # 스토리지 용량 2GB
+  volumeMode: Filesystem # 파일 시스템 형식
+  accessModes: # 읽기/쓰기 옵션
+  - ReadWriteOnce
+  storageClassName: manual
+  persistentVolumeReclaimPolicy: Delete
+  hostPath:
+    path: /tmp/k8s-pv # 스토리지를 연결할 Path
+
+storageClassName
+스토리지 클래스(StorageClass)를 설정하는 필드입니다. 특정 스토리지 클래스가 있는 PV는 해당 스토리지 클래스에 맞는 PVC만 연결됩니다. PV에  
+.spec.storageClassName 필드 설정이 없으면  .spec.storageClassName 필드 설정이 없는 PVC와만 연결됩니다.
+
+accessMode의 종류
+ReadWriteMany - 여러개의 노드가 읽고 쓸 수 있도록 마운트하는 옵션
+ReadWriteOnce - 하나의 노드에서만 볼륨을 읽고 쓸 수 있게 마운트하는 옵션
+ReadOnlyMany - 여러개의 노드가 읽을 수만 있도록
+
+persistentVolumneReclaimPolicy - PV가 제거되었을 때 작동하는 방법을 정의
+retain - 유지
+delete - 삭제
+recycle - 재활용
+
+PV 적용은 똑같이 kubectl apply -f 파일명.yaml 으로하면 된다. 
+
+
+pvc 생성
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-hostpath
+spec:
+  accessModes: # AccessModes
+  - ReadWriteOnce
+  volumeMode: Filesystem # 파일  시스템 형식
+  resources:
+    requests:
+      storage: 1Gi # 1GB 요청
+  storageClassName: manual # 스토리지 클래스 명
+
+
+.spec.resources.requests.storage 필드는 자원을 얼마나 사용할 것인지 요청(request)합니다. 
+여기서는 필드 값으로 1Gi(1GB)를 설정했습니다. 필드 값을 설정할 때는 앞에서 만든 PV의 용량을 초과하면 안됩니다. 
+만약 초과하는 경우 사용할 수 있는 PV가 없으므로 PVC를 생성할 수 없는 Pending 상태가 됩니다.
+
+.spec.storageClassName 필드를 위에서 생성한 PV와 동일하게 생성하여 위의 PV에 정상적으로 연결될 수 있도록 합니다.
+
+이렇게 생성한 PVC를 볼륨으로 사용하는 디플로이 오브젝트 예시
+
+# Deployment
+apiVersion: apps/v1
+<!-- kind: Deployment
+metadata:
+  name: grafana
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: grafana-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grafana-app
+    spec:
+      containers:
+      - name: grafana
+        image: 이미지
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 500m
+            memory: 200Mi
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: pvc-hostpath
+      volumes:
+        - name: pvc-hostpath
+          persistentVolumeClaim:
+            claimName: pvc-hostpath -->

@@ -25,16 +25,16 @@ spec:
   selector:     # selector의 레이블 지정
     matchLabels:
       app: nginx
-  template:
-    metadata:
+  template:     
+    metadata: 
       labels:
         app: nginx # 파드에 레이블을 붙인다. 
     spec:       # 컨테이너 이미지 지정
       containers:
-      - name: nginx
-        image: nginx # 컨테이너에서 사용할 이미지 
+      - name: nginx   
+        image: nginx   
         ports:
-        - containerPort: 80
+        - containerPort: 80   
 
 이렇게 생성한 디플로이먼트를 생성하는 방법은
 
@@ -96,6 +96,6 @@ spec:
   로컬에서 해당 node ip 주소와 port를 제대로 적어서 접속 시도했지만 접속이 되지않는다.
   node를 바꿔서(drain을 사용해서)해도 접속이 되지않는다.
 
-  조사 결과 보안 문제인것 같다.
+
 
     
