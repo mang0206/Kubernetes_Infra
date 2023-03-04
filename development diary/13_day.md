@@ -42,7 +42,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: 192.168.1.10
-    path: "/mnt.jenkins"
+    path: "/mnt/jenkins"
 
 pvc
 apiVersion: v1
@@ -71,7 +71,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: 192.168.1.10
-    path: "/mnt.jenkins"
+    path: "/mnt/jenkins"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
