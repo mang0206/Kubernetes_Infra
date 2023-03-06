@@ -61,8 +61,16 @@ LABEL Name=my_nginx
 #### 4. Jenkins 파이프라인 생성 
 생성 시 SCM을 선택하고 git repository와 credential 연결
 
+<img src="https://user-images.githubusercontent.com/86212081/223032420-41eda13f-e80d-4046-8490-c31248dbcdcd.png" width = 500>
+
 #### 5. build 시도
+
+<img src="https://user-images.githubusercontent.com/86212081/223032485-7d74ee9c-5f2e-4733-b2ae-d0b82aa67313.png" width = 500>
 
 #### 6. 실패
 nginx deployment도 생성되고 loadbalance로 외부 포트와 연결까지는 되었지만
 index.html파일이 임의로 생성한 파일이 아니라 기본 nginx파일이다.
+
+<img src="https://user-images.githubusercontent.com/86212081/223032569-6a212db0-94dd-4a91-a3ed-c7f90f3e544a.png" width = 500>
+
+<img src="https://user-images.githubusercontent.com/86212081/223032606-d83a79db-1eeb-473f-b12c-86f68ae56822.png" width = 500>
