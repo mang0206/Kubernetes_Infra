@@ -145,3 +145,7 @@ sotorageclass 생성후 pv와 volumeclaimtemplate에 strorageclass 명시 후 �
 <img src="https://user-images.githubusercontent.com/86212081/225809849-b29143c7-6197-485b-9d56-7ebc4fd2329b.png" width=1000>
 
 현재 statefulset에 의해 생성된 pvc가 계속해서 mount 되지 않는 오류가 발생하고 있다.....
+
+지금까지 진행한 yaml 파일
+
+  ->  https://github.com/mang0206/indexfile_for_jenkins_test/commit/6908f3eb95c41acae4d0f178433d2e69f0e28ef2
