@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
       cfg.vm.provider "virtualbox" do |vb|
         vb.name = "m-k8s"
         vb.cpus = 2
-        vb.memory = 10240
+        vb.memory = 6144
         vb.customize ["modifyvm", :id, "--groups", "/k8s-SgMST-1.13.1(sns_project)"]
       end
       cfg.vm.host_name = "m-k8s"

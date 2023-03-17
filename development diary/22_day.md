@@ -34,6 +34,19 @@ tolerations:
 
 mysql statefulset yaml 파일
 ```
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /mysql
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -70,7 +83,6 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /var/lib/mysql
-  
   volumeClaimTemplates:
     - metadata:
         name: data
