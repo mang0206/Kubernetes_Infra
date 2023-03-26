@@ -55,9 +55,9 @@ RUN ./gradlew build
 # Expose port 8080
 EXPOSE 8080
 
-COPY build/libs/*.jar application.jar
+# COPY build/libs/*.jar application.jar
 # Set the command to run the application
-CMD ["java", "-jar", "application.jar.jar"]
+CMD ["java", "-jar", "build/libs/*.jar"]
 ```
 
 spring boot 빌드에 대한 기본지식이 없어서 한참 해맸다... 아무튼 build 진행
@@ -72,5 +72,22 @@ docker build -t mysns .
 권한 수정 후 다시 시도
 ```
 git update-index --add --chmod=+x gradlew
+or
+chmod=+x gradlew
 ```
+
+<img src="https://user-images.githubusercontent.com/86212081/227756468-bc677e09-37e5-47e2-b654-25039551245c.png" width=500>
+build가 잘 되었으므로 이제 이미지 push하고 deployment 실행
+
+push의 경우 docker hub말고 이전에 설치해뒀던 사설 레지스트리인 docker private registry에 push  
+docker private registry에 push하기 위해서는 build할 때 이미지명에 ip, port 번호를 넣어서 build 해야한다.  
+build했던 이미지 삭제 후 진행
+```
+docker rmi mysns
+docker build 192.168.1.10:8443/mysns .
+docker push 192.168.1.10:8443/mysns
+```
+<img src="https://user-images.githubusercontent.com/86212081/227762487-de53de77-555d-4a74-b346-8ec468f8f6ee.png" width=600>
+
+push가 완료 되었으므로 deployment 및 service 생성 후 확인
 
