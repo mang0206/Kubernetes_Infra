@@ -23,6 +23,9 @@ COPY build/libs/*.jar application.jar
 # Set the command to run the application
 CMD ["java", "-jar", "application.jar.jar"]
 
+
+
+
 # FROM adoptopenjdk/openjdk11
 # CMD ["./gradlew", "build"]
 # ARG JAR_FILE_PATH=target/*.jar
