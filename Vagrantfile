@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
       cfg.vm.box = "sysnet4admin/CentOS-k8s"
       cfg.vm.provider "virtualbox" do |vb|
         vb.name = "w#{i}-k8s"
-        vb.cpus = 1
+        vb.cpus = 2
         vb.memory = 6144
         vb.customize ["modifyvm", :id, "--groups", "/k8s-SgMST-1.13.1(sns_project)"]
       end

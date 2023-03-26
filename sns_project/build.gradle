@@ -1,21 +1,30 @@
-plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.8'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+// 프로젝트의 플러그인 의존성(라이브러리) 관리를 위한 설정
+buildscript {
+    //ext는 build.gradle에서 사용하는 전역변수를 설정하겠다는 의미
+    ext {
+        springBootVersion = '2.7.8.RELEASE'
+    }
+    //라이브러리들을 어떤 원격 저장소에서 받을 지를 정한다.
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    //프로젝트 개발에 필요한 라이브러리들을 선언하는 곳
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
-group = 'sns_project'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
+// 이 4개의 플러그인은 자바와 스프링 부트를 사용하기 위해서는 필수 플러그인들이다.
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+// 스프링 부트의 의존성들을 관리해 주는 플러그인이라 꼭 추가해야한다.
+apply plugin: 'io.spring.dependency-management'
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 dependencies {
@@ -29,3 +38,35 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// plugins {
+// 	id 'java'
+// 	id 'org.springframework.boot' version '2.7.8'
+// 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+// }
+
+// group = 'sns_project'
+// version = '0.0.1-SNAPSHOT'
+// sourceCompatibility = '11'
+
+// configurations {
+// 	compileOnly {
+// 		extendsFrom annotationProcessor
+// 	}
+// }
+
+// repositories {
+// 	mavenCentral()
+// }
+
+// dependencies {
+// 	implementation 'org.springframework.boot:spring-boot-starter-web'
+// 	compileOnly 'org.projectlombok:lombok'
+// 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+// 	annotationProcessor 'org.projectlombok:lombok'
+// 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+// }
+
+// tasks.named('test') {
+// 	useJUnitPlatform()
+// }
