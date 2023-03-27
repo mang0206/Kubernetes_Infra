@@ -25,3 +25,23 @@ spec:
       targetPort: 80
       nodePort: 30000
   type: NodePort
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: mysns
+# spec:
+#   selector:
+#     matchLabels:
+#       app: mysns
+#   replicas: 2
+#   template:
+#     metadata:
+#       labels:
+#         app: mysns
+#     spec:
+#       containers:
+#         - name: mysns
+#           image: 192.168.1.10:8443/mysns
+#           ports:
+#           - containerPort: 80
