@@ -91,3 +91,45 @@ docker push 192.168.1.10:8443/mysns
 
 push가 완료 되었으므로 deployment 및 service 생성 후 확인
 
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysns
+spec:
+  selector:
+    matchLabels:
+      app: mysns
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: mysns
+    spec:
+      containers:
+        - name: mysns
+          image: 192.168.1.10:8443/mysns
+          ports:
+          - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sns-service
+spec:
+  selector:
+    app: mysns
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 80
+      nodePort: 30000
+  type: NodePort
+```
+현재 실습 진행 중 kubernets만으로도 컴퓨터 메모리를 다 사용하게되어 진행이 불가능할 정도로 렉이 걸린다... vagrant로 가상서버 cpu, memory downgrade 후 실습진행
+downgrade후 다시 deployment실행하면 back-off 오류가 발생한다. 우선 리소스를 아끼기 위해 deployment가 아닌 단일 pod로 진행했지만 downgrade로 진행했을 때 아래와 같이 mysql pod에대한 resource가 부족하다.
+
+<img src="https://user-images.githubusercontent.com/86212081/227817082-61ce87bb-b244-4c3d-9934-fe53ab15eb91.png" width=1000>
+
+아쉽지만 쿠버네티스 실습은 인프라 및 파이프라인을 구축했던걸로 만족하고 spring boot 개발은 따로 local에서 진행...
