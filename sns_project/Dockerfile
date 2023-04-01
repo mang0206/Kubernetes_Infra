@@ -16,9 +16,6 @@ COPY src ./src
 # Build the application
 RUN ./gradlew build
 
-# Expose port 8080
-EXPOSE 8080
-
 # COPY build/libs/*.jar application.jar
 # Set the command to run the application
 CMD ["java", "-jar", "build/libs/*.jar"]
