@@ -28,7 +28,7 @@ charts.yaml에 채워 넣는다.
 
 
 1. Jenkins를 위한 볼륨 생성
-
+```
 pv
 apiVersion: v1
 kind: PersistentVolume
@@ -43,8 +43,9 @@ spec:
   nfs:
     server: 192.168.1.10
     path: "/mnt/jenkins"
-
+```
 pvc
+```
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -55,10 +56,10 @@ spec:
   resources:
     requests:
       storage: 1Gi
-
+```
 다수의 오브젝트 배포 야믈은 파일 구분자인 '---'로 묶어 단일 야믈로 작성해 배포 가능하다.
 위 pv, pvc 파일을 하나의 파일로 수정
-
+```
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -83,3 +84,4 @@ spec:
   resources:
     requests:
       storage: 1Gi
+```
