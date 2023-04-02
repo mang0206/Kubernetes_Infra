@@ -27,20 +27,25 @@ helm 설치
 
 우선 helm을 설치하기 위한 brew 매니저 설치
 1. brew는 소스를 다운 받아서 컴파일하는 방식으로 동작하므로 사전에 개발 도구를 설치해야 하며 루비로 개발되었으므로 ruby 인터프리터도 설치해야 합니다.
-    - sudo yum groupinstall 'Development Tools' && sudo yum install curl file git ruby
-
+```
+ - sudo yum groupinstall 'Development Tools' && sudo yum install curl file git ruby
+```
 2. 필요한 패키지를 설치했으면 다음 명령어를 수행하여 brew 설치를 진행합니다.
-    - sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
-
+```
+- sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+```
     (이 작업을 위해 git, curl upgrade 진행)
 
 3. Linux brew는 패키지를 $HOME/.linuxbrew/Cellar에 설치하므로 초기화 파일에 반영하기 위해 .bash_profile에 아래의 내용을 추가 합니다.
-    - echo 'export PATH="${HOME}/.linuxbrew/bin:$PATH"' >>~/.bash_profile
-      echo 'export MANPATH="${HOME}/.linuxbrew/share/man:$MANPATH"' >>~/.bash_profile
-      echo 'export INFOPATH="${HOME}/.linuxbrew/share/info:$INFOPATH"' >>~/.bash_profile
-
+```    
+echo 'export PATH="${HOME}/.linuxbrew/bin:$PATH"' >>~/.bash_profile
+echo 'export MANPATH="${HOME}/.linuxbrew/share/man:$MANPATH"' >>~/.bash_profile
+echo 'export INFOPATH="${HOME}/.linuxbrew/share/info:$INFOPATH"' >>~/.bash_profile
+```
 4. 추가 후 변경내용을 반영해 줍니다.
-    - source .bash_profile
+```
+source .bash_profile
+```
 
 brew 설치 실패.... 
 brew의 경우 root 사용자는 설치가 되지 않아 임시 사용자를 만든 후 설치 시도 했지만 성공하지 못했다...
@@ -48,11 +53,11 @@ brew의 경우 root 사용자는 설치가 되지 않아 임시 사용자를 만
 다른 방식으로 설치 시도
 
 helm document에 나와 있는 방법
-
+```
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
 chmod 700 get_helm.sh
 ./get_helm.sh
-
+```
 이 방법도 실패....
 
 현재 많은 설정을 임의대로 수정했기 때문에 가상환경 재설치 후 다시 실습 진행
