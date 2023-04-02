@@ -3,7 +3,8 @@
 
 현재 실습중인 pv, pcv, pod yaml 파일
 
-- pv
+##### pv
+```
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -18,8 +19,9 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   hostPath:
     path: /tmp/k8s_pv 
-
-- pvc
+```
+###### pvc
+```
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -32,8 +34,9 @@ spec:
     requests:
       storage: 100Mi
   storageClassName: mm
-
-- pod
+```
+###### pod
+```
 apiVersion: v1
 kind: Pod
 metadata:
@@ -51,10 +54,11 @@ spec:
     - name: pv-hostpath
       persistentVolumeClaim:
         claimName: pvc-hostpath
-
+```
 실패 후 공식 document 파일 그대로 시도
 
-pv
+##### pv
+```
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -69,8 +73,9 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: "/tmp/k8s_pv"
-
-pvc
+```
+###### pvc
+```
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -82,8 +87,9 @@ spec:
   resources:
     requests:
       storage: 1Gi
-
-pod
+```
+##### pod
+```
 apiVersion: v1
 kind: Pod
 metadata:
@@ -102,11 +108,12 @@ spec:
       volumeMounts:
         - mountPath: "/usr/share/nginx/html"
           name: task-pv-storage
-
+```
 실습 결과 pv와 pvc는 잘 마운트 되었지만 pod에 exec로 접속결과 index.html은 존재 x  실패
 성공하면 document와 실습 파일을 비교하면서 분석하려 했지만 document도 실패했기 때문에 다른 방법 모색
 
 pv, pvc말고 hostpath를 사용해서 실습
+```
 apiVersion: v1
 kind: Pod
 metadata:
@@ -125,7 +132,7 @@ spec:
       hostPath:
         path: /tmp/k8s_pv
         type: Directory
-
+```
 여전히 exec로 접속결과 index.html은 존재 x
 혹시 경로 문제일 수 도 있어서 같은 파일에서 hostPath의 path만 /root로 변경 후 시도
 
