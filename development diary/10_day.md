@@ -7,7 +7,7 @@ pod 가 계속해서 contianer creating 상태라면 yaml 파일의 문법이 �
 
 kubectl describe pods
 이렇게 확인한 결과
-
+```
 Events:
   Type     Reason       Age                 From               Message
   ----     ------       ----                ----               -------
@@ -20,7 +20,7 @@ Events:
   ----     ------       ----               ----               -------
   Normal   Scheduled    42s                default-scheduler  Successfully assigned default/my-nginx to w1-k8s
   Warning  FailedMount  10s (x7 over 42s)  kubelet, w1-k8s    MountVolume.SetUp failed for volume "test-hp" : hostPath type check failed: /data is not a directory
-
+```
 디렉토리를 새로 만들고 시도해봐도 같은 결과가 나온다
 
 구굴링으로 원인 파악.....
@@ -36,16 +36,21 @@ Events:
 nfs를 사용한 pv, pvc로 볼륨 마운트 시도
 
 nfs 서비스 시작
+```
 systemctl start nfs-server.service
-
+```
 nfs설정
 공유할 폴더 생성후 NFS 서비스 설정파일 수정 공유할 디렉터리 경로와 현재 사용하고 있는 서버 인스턴스의 서브넷 범위를 지정
+```
 echo '/nfs_shared 192.168.1.0/24(rw,sync,no_root_squash)' >> /etc/exports
-
+```
 재 부팅시 자동으로 시작하게 하기
+```
 systemctl enable nfs-server.service
+```
 
 nfs 서비스 상태 확인
+```
 systemctl status nfs-server.service
 
 ● nfs-server.service - NFS server and services
@@ -60,9 +65,10 @@ systemctl status nfs-server.service
 
 Feb 27 12:23:15 m-k8s systemd[1]: Starting NFS server and services...
 Feb 27 12:23:15 m-k8s systemd[1]: Started NFS server and services.
+```
 
-
-- pv
+##### pv
+```
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -77,8 +83,9 @@ spec:
   nfs:
     server: 192.168.1.10
     path: "/nfs_shared"
-
-- pvc
+```
+###### pvc
+```
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -91,8 +98,9 @@ spec:
   resources:
     requests:
       storage: 100Mi
-  
-- pod
+```
+###### pod
+```
 apiVersion: v1
 kind: Pod
 metadata:
@@ -110,5 +118,5 @@ spec:
     - name: nfs-vol
       persistentVolumeClaim:
         claimName: nfs-pvc
-
+```
 드디어 볼륨 마운트 연결 성공
