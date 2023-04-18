@@ -1,3 +1,15 @@
+package sns_project.domain.user;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Table;
+import org.springframework.data.annotation.Id;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.util.ArrayList;
 
 @Getter
@@ -41,7 +53,7 @@ public class Users {
     // private List<String> post_id;
 
     @Builder
-    public User(String user_id, String password, String nickname, String user_name ) {
+    public Users(String user_id, String password, String nickname, String user_name ) {
         this.user_id = user_id;
         this.user_id = password;
         this.user_id = nickname;
