@@ -11,7 +11,14 @@ https://github.com/dyeo-mee/YDP-SNS
 - Java Spring Boot Framework
 - mysql
 
-## 2. 프로젝트 목표
+## 프로젝트 목표
   - 기존 프로젝트에 새롭게 공부한 기술스택을 적용해 온전히 내 것으로 만들기
 
 
+## Development Diary
+07 ~ 08 - nodeport Test  
+08 ~ 10 - volume mount Test  
+
+11 ~ 19 - Jenkins CI/CD 구현
+
+19 ~ 25 - StatefulSet으로 Mysql 이중화 구현  
